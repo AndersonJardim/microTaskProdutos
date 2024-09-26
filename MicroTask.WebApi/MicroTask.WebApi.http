@@ -1,0 +1,6 @@
+@MicroTask.WebApi_HostAddress = http://localhost:5280
+
+GET {{MicroTask.WebApi_HostAddress}}/
+Accept: application/json
+
+###
