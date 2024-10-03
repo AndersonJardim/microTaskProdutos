@@ -12,8 +12,17 @@ namespace MicroTask.Infra.Data
         public async Task<IEnumerable<Produtos>> GetAllAsync()
         {
             dbConnection.Open();
-
-            return await dbConnection.QueryAsync<Produtos>("SELECT * FROM Produtos");
+            string query = $@"SELECT * FROM Produtos";
+            return await dbConnection.QueryAsync<Produtos>(query);
+        }
+        public async Task<Produtos> GetByIdAsync(int id)
+        {
+            dbConnection.Open();
+            string query = $@"
+                            SELECT * 
+                            FROM Produtos 
+                            where Id = @Id";
+            return await dbConnection.QueryFirstOrDefaultAsync<Produtos>(query, new { Id = id });
         }
     }
 }

@@ -28,5 +28,20 @@ namespace MicroTask.WebApi.Controllers
 
             return Ok(produtos);
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            logger.LogInformation($"Inicio do método {nameof(GetByIdAsync)}. Id da consulta {id}.");
+
+            var produtos = await produtosService.GetByIdAsync(id);
+
+            logger.LogInformation($"Finalizado método {nameof(GetByIdAsync)}");
+
+            return Ok(produtos);
+        }
     }
 }

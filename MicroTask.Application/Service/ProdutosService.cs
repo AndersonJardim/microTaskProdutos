@@ -10,5 +10,7 @@ namespace MicroTask.Application.Service
 
         public async Task<IEnumerable<Produtos>> GetAllAsync() =>
             await produtosRepository.GetAllAsync();
+        public async Task<Produtos> GetByIdAsync(int id) =>
+            await produtosRepository.GetByIdAsync(id);
     }
 }
