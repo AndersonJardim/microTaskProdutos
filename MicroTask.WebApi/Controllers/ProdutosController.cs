@@ -5,26 +5,26 @@ namespace MicroTask.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ProdutosController : ControllerBase
+    public class ProdutosController(
+        ILoggerFactory loggerFactory,
+        IProdutosService produtosService) : ControllerBase
     {
-        private readonly ILogger logger;
-        private readonly IProdutosService produtosService;
-
-        public ProdutosController(
-            ILoggerFactory loggerFactory,
-            IProdutosService produtosService)
-        {
-            this.logger = loggerFactory.CreateLogger<ProdutosController>()
+        private readonly ILogger logger = loggerFactory.CreateLogger<ProdutosController>()
                 ?? throw new ArgumentNullException(nameof(loggerFactory));
-
-            this.produtosService = produtosService
+        private readonly IProdutosService produtosService = produtosService
                 ?? throw new ArgumentNullException(nameof(produtosService));
-        }
 
         [HttpGet]
-        public async Task<IActionResult> ProdutosGetAllAsync()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var produtos = await produtosService.ProdutosGetAllAsync();
+            logger.LogInformation($"Inicio do método {nameof(GetAllAsync)}");
+
+            var produtos = await produtosService.GetAllAsync();
+
+            logger.LogInformation($"Finalizado método {nameof(GetAllAsync)}");
 
             return Ok(produtos);
         }

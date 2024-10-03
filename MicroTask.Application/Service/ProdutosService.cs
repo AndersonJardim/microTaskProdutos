@@ -3,12 +3,12 @@ using MicroTask.Domain.Models;
 
 namespace MicroTask.Application.Service
 {
-    public class ProdutosService : IProdutosService
+    public class ProdutosService(
+        IProdutosRepository produtosRepository) : IProdutosService
     {
-        public async Task<Produtos> ProdutosGetAllAsync()
-        {
-            await Task.CompletedTask;
-            return new Produtos();
-        }
+        private readonly IProdutosRepository produtosRepository = produtosRepository;
+
+        public async Task<IEnumerable<Produtos>> GetAllAsync() =>
+            await produtosRepository.GetAllAsync();
     }
 }

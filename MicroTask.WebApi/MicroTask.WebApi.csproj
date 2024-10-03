@@ -9,11 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MicroTask.Application\MicroTask.Application.csproj" />
     <ProjectReference Include="..\MicroTask.Domain\MicroTask.Domain.csproj" />
+    <ProjectReference Include="..\MicroTask.Infra.Data\MicroTask.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

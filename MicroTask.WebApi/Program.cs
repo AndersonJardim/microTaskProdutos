@@ -1,5 +1,5 @@
-using MicroTask.Application.Service;
-using MicroTask.Domain.Interfaces;
+using MicroTask.Application.DependencyInjection;
+using MicroTask.Infra.Data.DependencyInjection;
 
 namespace MicroTask.WebApi;
 
@@ -13,7 +13,9 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddTransient<IProdutosService, ProdutosService>();
+        builder.Services.AddApplication();
+        builder.Services.AddInfraData(builder.Configuration);
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         var app = builder.Build();
 

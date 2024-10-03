@@ -2,7 +2,7 @@ using MicroTask.Domain.Models;
 
 namespace MicroTask.Domain.Interfaces
 {
-    public interface IProdutosService
+    public interface IProdutosRepository
     {
         Task<IEnumerable<Produtos>> GetAllAsync();
     }
