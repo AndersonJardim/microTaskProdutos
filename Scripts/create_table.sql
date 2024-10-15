@@ -1,5 +1,4 @@
-USE [TesteDB]
-GO
+
 
 /****** Object:  Table [dbo].[Clientes]    Script Date: 25/09/2024 23:52:55 ******/
 SET ANSI_NULLS ON

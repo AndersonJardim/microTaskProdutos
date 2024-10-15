@@ -1,18 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using MicroTask.Domain.Interfaces;
+using MicroTask.Domain.Models;
 
 namespace MicroTask.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ProdutosController(
-        ILoggerFactory loggerFactory,
-        IProdutosService produtosService) : ControllerBase
+    public class ProdutosController : ControllerBase
     {
-        private readonly ILogger logger = loggerFactory.CreateLogger<ProdutosController>()
+        private readonly ILogger<ProdutosController> logger;
+        private readonly IProdutosService produtosService;
+
+        public ProdutosController(ILoggerFactory loggerFactory, IProdutosService produtosService)
+        {
+            logger = loggerFactory.CreateLogger<ProdutosController>()
                 ?? throw new ArgumentNullException(nameof(loggerFactory));
-        private readonly IProdutosService produtosService = produtosService
+            this.produtosService = produtosService
                 ?? throw new ArgumentNullException(nameof(produtosService));
+        }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -29,7 +34,7 @@ namespace MicroTask.WebApi.Controllers
             return Ok(produtos);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,11 +42,42 @@ namespace MicroTask.WebApi.Controllers
         {
             logger.LogInformation($"Inicio do método {nameof(GetByIdAsync)}. Id da consulta {id}.");
 
-            var produtos = await produtosService.GetByIdAsync(id);
+            var produto = await produtosService.GetByIdAsync(id);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
 
             logger.LogInformation($"Finalizado método {nameof(GetByIdAsync)}");
 
-            return Ok(produtos);
+            return Ok(produto);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateAsync([FromBody] Produtos produto)
+        {
+            var result = await produtosService.AddAsync(produto);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = result }, produto);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAsync([FromBody] Produtos produto)
+        {
+            await produtosService.UpdateAsync(produto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            await produtosService.DeleteAsync(id);
+            return NoContent();
         }
     }
 }
