@@ -19,15 +19,16 @@ namespace MicroTask.Infra.Data
         {
             dbConnection.Open();
             string query = $@"
-                            SELECT * 
-                            FROM Produtos 
-                            where Id = @Id";
+                            SELECT TOP 1 * 
+                              FROM Produtos 
+                             WHERE Id = @Id";
             return await dbConnection.QueryFirstOrDefaultAsync<Produtos>(query, new { Id = id });
         }
-        public async Task<int> AddAsync(Produtos produto)
+        public async Task<Produtos> AddAsync(Produtos produto)
         {
-            var query = "INSERT INTO Produtos (Preco, Descricao) VALUES (@Preco, @Descricao); SELECT CAST(SCOPE_IDENTITY() as int);";
-            return await dbConnection.QuerySingleAsync<int>(query, new { produto.Preco, produto.Descricao });
+            var query = "INSERT INTO Produtos (Preco, Descricao) VALUES (@Preco, @Descricao); ";
+            await dbConnection.ExecuteAsync(query, new { produto.Preco, produto.Descricao });
+            return produto;
         }
         public async Task UpdateAsync(Produtos produto)
         {

@@ -11,7 +11,7 @@ namespace MicroTask.Application.Service
             await produtosRepository.GetAllAsync();
         public async Task<Produtos?> GetByIdAsync(int id) =>
             await produtosRepository.GetByIdAsync(id);
-        public async Task<int> AddAsync(Produtos produto) =>
+        public async Task<Produtos> AddAsync(Produtos produto) =>
             await produtosRepository.AddAsync(produto);
         public async Task UpdateAsync(Produtos produto) =>
             await produtosRepository.UpdateAsync(produto);
