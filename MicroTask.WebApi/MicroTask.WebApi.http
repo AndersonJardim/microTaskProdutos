@@ -1,6 +1,80 @@
-@MicroTask.WebApi_HostAddress = http://localhost:5280
+@MicroTask.WebApi_HostAddressProdutos = https://localhost:7104
+@MProdutos = https://localhost:7104
+@MVendas = https://localhost:7052
+@MicroTask.WebApi_HostAddressERRADO = https://localhost:7011
 
-GET {{MicroTask.WebApi_HostAddress}}/
+### Descricao": "PEPISI"
+GET {{MProdutos}}/api/Produtos/GetById?id=2
+Accept: application/json
+
+
+### 
+GET {{@MVendas}}/
 Accept: application/json
 
 ###
+GET {{MicroTask.WebApi_HostAddressERRADO}}/
+Accept: application/json
+
+
+
+
+### prod
+GET {{MProdutos}}/api/Produtos/GetById?id=2
+
+
+### MVendas
+post {{MVendas}}/api/Produtos/GetById?id=2
+
+
+
+### POST: Cadastrar uma venda de PEPISI para o cliente (idCliente = 2, idProduto = 2)
+POST https://localhost:7031/api/Vendas/CadastrarVenda
+Content-Type: application/json
+Accept: */*
+{
+    "idCliente": 2,
+    "idProduto": 2
+}
+
+
+
+
+
+
+### GET: Obter todos os produtos
+GET https://localhost:7031/api/Produtos/GetAll
+Accept: application/json
+
+
+### GET: Obter produto por ID
+GET https://localhost:7031/api/Produtos/GetById?id=1
+Accept: application/json
+
+
+### POST: Criar um novo produto
+POST https://localhost:7031/api/Produtos/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 3,
+  "descricao": "Produto Novo"
+}
+
+
+### PUT: Atualizar um produto existente
+PUT https://localhost:7031/api/Produtos/Update
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 1,
+  "preco": 29.99,
+  "descricao": "Produto Atualizado"
+}
+
+
+### DELETE: Excluir um produto por ID
+DELETE https://localhost:7031/api/Produtos/Delete?id=1
+Accept: application/json
